@@ -10,6 +10,8 @@ $(document).ready(function() {
     body: "grant_type=client_credentials&client_id=" + petAPIKey + "&client_secret=" + petSecret
   };
   var petRequestURL = "https://api.petfinder.com/v2/animals";
+  var animalTypeEl = $("#animalType");
+  var breedInputEl = $("#breedInput");
 
   // Retrieve PetFinder API Token and set timeout to retrieve another when expired
   var getToken = function() {
@@ -42,6 +44,7 @@ $(document).ready(function() {
     return petRequestOptions;
   }
 
+  // Function for search button event listener
   var searchBtnBehavior = function(event) {
     event.preventDefault();
     if ($("#locationInput").val() === "") {
@@ -54,18 +57,75 @@ $(document).ready(function() {
     };
     $("#petsResults").html("");
     getPetResults();
+    $("#breedsSelected").html("");
+  }
+  
+  // Add selected breed to list
+  var addSelectedBreed = function() {
+        var selectedBreedsEl = $("#breedsSelected");
+        var listEl = $('<li class="selectedBreed" style="display: block;">');
+        var removeBtn = $('<button type="button" class="closeBtn">');
+        var selectedBreed = breedInputEl.val();
+
+        listEl.text(selectedBreed);
+        removeBtn.text("x");
+        selectedBreedsEl.append(listEl);
+        listEl.append(removeBtn);
+  }
+
+  // Get breeds data from fetch, populate autocomplete field, and add selected breeds
+  var setAvailableBreeds = function(data) {
+    var availableBreeds = [];
+
+    for (var i = 0; i < data.breeds.length; i++) {
+        availableBreeds.push(data.breeds[i].name);
+    }
+    breedInputEl.autocomplete({
+      source: availableBreeds
+    }).focus(function() {
+      $(this).autocomplete("search", " ");
+    })
+  }
+
+  // Set auto complete values by animal type when animal type is changed in selection
+  var setBreedAutoComplete = function() {
+    if (animalTypeEl.val() !== "All") {
+      $("#breedSelection").attr("style", "display: block;");
+      var animalType = animalTypeEl.val();
+      var breedFetchURL = "https://api.petfinder.com/v2/types/" + animalType + "/breeds"
+
+      fetch(breedFetchURL, setPetRequestOptions())
+        .then(function(response) {
+          return response.json();
+        })
+        .then(function(data) {
+          setAvailableBreeds(data);
+        })
+    } else {
+      $("#breedSelection").attr("style", "display: none;")
+    }
   }
 
   // Set parameters for search with input from form and return fetch request URL
   var setRequestURL = function() {
     var searchParams = new URLSearchParams();
-    var animalTypeEl = $("#animalType");
     var genderSelectionEl = $("#genderSelection");
     var locationInputEl = $("#locationInput");
     
     if (animalTypeEl.val() !== "All") {
       var typeParam = animalTypeEl.val();
       searchParams.append("type", typeParam);
+    }
+
+    var breedParam = "";
+    if ($(".selectedBreed")) {
+      $(".selectedBreed").each(function() {
+        $(this).children().remove();
+        breedParam += $(this).text() + ",";
+      })
+    }
+    if (breedParam !== "") {
+      searchParams.append("breed", breedParam)
     }
 
     var sizeParam = "";
@@ -160,10 +220,26 @@ $(document).ready(function() {
         console.log(data);
         printSearchResults(data);
       })
-
   }
 
   // Set event listener for search button
   $("#searchBtn").on("click", searchBtnBehavior);
+  
+  // Set event listener for change in animal type
+  $("#animalType").on("change", function() {
+    $("#breedsSelected").html("");
+    setBreedAutoComplete();
+  });
+
+  // Set event listener for remove button on selected breeds
+  $("#breedsSelected").on("click", ".closeBtn", function() {
+    $(this).parent().remove();
+  })
+
+  // Set event listener for add button for breed
+  $("#breedsAddBtn").on("click", function() {
+    addSelectedBreed();
+    breedInputEl.val("");
+  });
 
 })
