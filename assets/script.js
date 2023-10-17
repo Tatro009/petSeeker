@@ -42,6 +42,20 @@ $(document).ready(function() {
     return petRequestOptions;
   }
 
+  var searchBtnBehavior = function(event) {
+    event.preventDefault();
+    if ($("#locationInput").val() === "") {
+      $("#locationError").text("Please enter a location.");
+      return
+    };
+    if ($("#distanceInput").val() === "") {
+      $("#distanceError").text("Please enter a distance for the search results.");
+      return
+    };
+    $("#petsResults").html("");
+    getPetResults();
+  }
+
   // Set parameters for search with input from form and return fetch request URL
   var setRequestURL = function() {
     var searchParams = new URLSearchParams();
@@ -82,6 +96,11 @@ $(document).ready(function() {
     if (locationInputEl.val() !== "") {
       var locationParam = locationInputEl.val();
       searchParams.append("location", locationParam);
+    }
+
+    if ($("#distanceInput").val() !== "") {
+      var distanceParam = $("#distanceInput").val();
+      searchParams.append("distance", distanceParam);
     }
 
     if (searchParams.size !== 0) {
@@ -145,14 +164,6 @@ $(document).ready(function() {
   }
 
   // Set event listener for search button
-  $("#searchBtn").on("click", function(event) {
-    event.preventDefault();
-    if ($("#locationInput").val() === "") {
-      $("#locationError").text("Please enter a location.");
-      return
-    };
-    $("#petsResults").html("");
-    getPetResults();
-  });
+  $("#searchBtn").on("click", searchBtnBehavior);
 
 })
