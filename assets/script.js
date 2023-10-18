@@ -17,7 +17,11 @@ $(document).ready(function() {
   var getToken = function() {
     var fetchToken = fetch(petTokenURL, petTokenOptions)
       .then(function(response) {
+        if (!response.ok) {
+          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but our service is unavailable at this time. We apoligze for any inconvenience.</pre>")
+        } else {
         return response.json();
+        }
       })
       .then(function(data) {
         // Store access token in body element return expire time to use in setTimeout
@@ -281,7 +285,11 @@ $(document).ready(function() {
 
     fetch(setRequestURL(page, existingParams), setPetRequestOptions())
       .then(function(response) {
+        if (!response.ok) {
+          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>There seems to be a problem with the search request. Please check the spelling and format of the location entered. We apoligze for any inconvenience.</pre>")
+        } else {
         return response.json();
+        }
       })
       .then(function(data) {
         console.log(data);
@@ -294,7 +302,11 @@ $(document).ready(function() {
     var URL = petRequestURL + "/" + petID;
     fetch(URL, setPetRequestOptions())
       .then(function(response) {
+        if (!response.ok) {
+          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but there seems to be an issue retrieving that information. We apoligze for any inconvenience.</pre>")
+        } else {
         return response.json();
+        }
       })
       .then(function(data) {
         console.log(data);
