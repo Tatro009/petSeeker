@@ -63,6 +63,20 @@
       <option class="has-text-grey-lighter" value="male">Male</option>
       <option class="has-text-grey-lighter" value="female">Female</option>
     </select>
+
+    <h2>Pets that are...</h2>
+    <input class="otherCharCheckbox" id="childrenCheckbox" type="checkbox" data-param="good_with_children" value="true">
+    <label for="childrenCheckbox">Good with children</label><br>
+    <input class="otherCharCheckbox" id="dogsCheckbox" type="checkbox" data-param="good_with_dogs" value="true">
+    <label for="dogsCheckbox">Good with dogs</label><br>
+    <input class="otherCharCheckbox" id="catsCheckbox" type="checkbox" data-param="good_with_cats" value="true">
+    <label for="catsCheckbox">Good with cats</label><br>
+    <input class="otherCharCheckbox" id="houseCheckbox" type="checkbox" data-param="house_trained" value="true">
+    <label for="houseCheckbox">House-trained</label><br>
+    <input class="otherCharCheckbox" id="declawedCheckbox" type="checkbox" data-param="declawed" value="true">
+    <label for="declawedCheckbox">Declawed</label><br>
+    <input class="otherCharCheckbox" id="specialCheckbox" type="checkbox" data-param="special_needs" value="true">
+    <label for="specialCheckbox">In need of special care</label><br>
   
     <h2 class="has-text-grey-lighter">Choose Age</h2>
     <input class="ageCheckbox" type="checkbox" id="ageBaby" value="baby">
@@ -90,6 +104,11 @@
   </form>
 
   <div id="petsResults"  style="display: flex; flex-wrap: wrap;"></div>
+  <div id="pageBtns" style="display: none;">
+    <button id="previousBtn" type="button">Prev</button>
+    <p style="display: inline;" id="pageNumber"></p>
+    <button id="nextBtn" type="button">Next</button>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

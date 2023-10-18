@@ -55,8 +55,7 @@ $(document).ready(function() {
       $("#distanceError").text("Please enter a distance for the search results.");
       return
     };
-    $("#petsResults").html("");
-    getPetResults();
+    getPetResults(1, null);
     $("#breedsSelected").html("");
   }
   
@@ -107,61 +106,75 @@ $(document).ready(function() {
   }
 
   // Set parameters for search with input from form and return fetch request URL
-  var setRequestURL = function() {
-    var searchParams = new URLSearchParams();
-    var genderSelectionEl = $("#genderSelection");
-    var locationInputEl = $("#locationInput");
-    
-    if (animalTypeEl.val() !== "All") {
-      var typeParam = animalTypeEl.val();
-      searchParams.append("type", typeParam);
-    }
+  var setRequestURL = function(page, existingParams) {
+    if (existingParams !== null) {
+      var searchParams = new URLSearchParams(existingParams);
+    } else {
+      var searchParams = new URLSearchParams();
+      var genderSelectionEl = $("#genderSelection");
+      var locationInputEl = $("#locationInput");
+      
+      if (animalTypeEl.val() !== "All") {
+        var typeParam = animalTypeEl.val();
+        searchParams.append("type", typeParam);
+      }
 
-    var breedParam = "";
-    if ($(".selectedBreed")) {
-      $(".selectedBreed").each(function() {
-        $(this).children().remove();
-        breedParam += $(this).text() + ",";
+      var breedParam = "";
+      if ($(".selectedBreed")) {
+        $(".selectedBreed").each(function() {
+          $(this).children().remove();
+          breedParam += $(this).text() + ",";
+        })
+      }
+      if (breedParam !== "") {
+        searchParams.append("breed", breedParam)
+      }
+
+      var sizeParam = "";
+      $(".sizeCheckbox").each(function() {
+        if ($(this).prop("checked") === true) {
+          sizeParam += $(this).val() + ",";
+        };
+      });
+      if (sizeParam !== "") {
+        searchParams.append("size", sizeParam);
+      };
+
+      if (genderSelectionEl.val() !== "any") {
+        var genderParam = genderSelectionEl.val();
+        searchParams.append("gender", genderParam);
+      };
+
+      $(".otherCharCheckbox").each(function() {
+        if ($(this).prop("checked") === true) {
+          searchParams.append($(this).attr("data-param"), $(this).val())
+        }
       })
-    }
-    if (breedParam !== "") {
-      searchParams.append("breed", breedParam)
-    }
 
-    var sizeParam = "";
-    $(".sizeCheckbox").each(function() {
-      if ($(this).prop("checked") === true) {
-        sizeParam += $(this).val() + ",";
+      var ageParam = "";
+      $(".ageCheckbox").each(function() {
+        if ($(this).prop("checked") === true) {
+          ageParam += $(this).val() + ",";
+        };
+      });
+      if (ageParam !== "") {
+        searchParams.append("age", ageParam);
       };
-    });
-    if (sizeParam !== "") {
-      searchParams.append("size", sizeParam);
-    };
 
-    if (genderSelectionEl.val() !== "any") {
-      var genderParam = genderSelectionEl.val();
-      searchParams.append("gender", genderParam);
-    };
+      if (locationInputEl.val() !== "") {
+        var locationParam = locationInputEl.val();
+        searchParams.append("location", locationParam);
+      }
 
-    var ageParam = "";
-    $(".ageCheckbox").each(function() {
-      if ($(this).prop("checked") === true) {
-        ageParam += $(this).val() + ",";
-      };
-    });
-    if (ageParam !== "") {
-      searchParams.append("age", ageParam);
-    };
+      if ($("#distanceInput").val() !== "") {
+        var distanceParam = $("#distanceInput").val();
+        searchParams.append("distance", distanceParam);
+      }
 
-    if (locationInputEl.val() !== "") {
-      var locationParam = locationInputEl.val();
-      searchParams.append("location", locationParam);
+      $("#petsResults").attr("data-params", searchParams);
     }
 
-    if ($("#distanceInput").val() !== "") {
-      var distanceParam = $("#distanceInput").val();
-      searchParams.append("distance", distanceParam);
-    }
+    searchParams.append("page", page);
 
     if (searchParams.size !== 0) {
       var petParams = "?" + searchParams.toString();
@@ -179,6 +192,27 @@ $(document).ready(function() {
   // Function to print search results to page
   var printSearchResults = function(data) {
     var petResultsEl = $("#petsResults");
+
+    petResultsEl.attr("data-page", data.pagination.current_page);
+    petResultsEl.attr("data-total-pages", data.pagination.total_pages);
+    $("#pageNumber").text(data.pagination.current_page);
+    $("#pageBtns").attr("style", "display: block;");
+
+    if (petResultsEl.attr("data-page") == 1) {
+      $("#previousBtn").attr("style", "display: none;");
+    } else {
+      $("#previousBtn").attr("style", "display: inline;")
+    }
+
+    if (petResultsEl.attr("data-total-pages")) {
+      if (petResultsEl.attr("data-page") === petResultsEl.attr("data-total-pages")) {
+        $("#nextBtn").attr("style", "display: none;");
+      } else {
+        $("#nextBtn").attr("style", "display: inline;");
+      }
+    } else {
+      $("#nextBtn").attr("style", "display: inline;");
+    }
     
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
@@ -192,10 +226,10 @@ $(document).ready(function() {
       if (data.animals[i].photos.length !== 0) {     
         var petPhotoEl = $("<img>");  
         petPhotoEl.attr("src", data.animals[i].photos[0].medium);
-        petPhotoEl.addClass("image is-128x128")
+        petPhotoEl.addClass("image is-128x128");
       } else {
         var petPhotoEl = $("<h2>No Photo Available</h2>");
-        petPhotoEl.addClass("image is-128x128")
+        petPhotoEl.addClass("image is-128x128");
       }
       petSpeciesEl.text("Species: " + data.animals[i].species);
       petBreedsEl.text("Breed: " + data.animals[i].breeds.primary);
@@ -211,13 +245,13 @@ $(document).ready(function() {
       petResultsEl.append(petEl);
     }
   }
-  
 
   // Fetch search results from PetFinder API and log to console for viewing full data
-  var getPetResults = function() {
+  var getPetResults = function(page, existingParams) {
     $("#locationError").text("");
+    $("#petsResults").html("");
 
-    fetch(setRequestURL(), setPetRequestOptions())
+    fetch(setRequestURL(page, existingParams), setPetRequestOptions())
       .then(function(response) {
         return response.json();
       })
@@ -245,6 +279,22 @@ $(document).ready(function() {
   $("#breedsAddBtn").on("click", function() {
     addSelectedBreed();
     breedInputEl.val("");
+  });
+
+  // Set event listener for prev button for search page
+  $("#previousBtn").on("click", function(event) {
+    event.preventDefault();
+    var page = $("#petsResults").attr("data-page");
+    page--;
+    getPetResults(page, $("#petsResults").attr("data-params"));
+  });
+
+  // Set event listener for next button for search page
+  $("#nextBtn").on("click", function(event) {
+    event.preventDefault();
+    var page = $("#petsResults").attr("data-page");
+    page++;
+    getPetResults(page, $("#petsResults").attr("data-params"));
   });
 
 })
