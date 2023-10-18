@@ -182,7 +182,9 @@ $(document).ready(function() {
     
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
+      petEl.addClass(".has-text-link");
       var petColorEl = $("<p>");
+      petColorEl.addClass("has-text-link");
       var petSpeciesEl = $("<p>");
       var petBreedsEl = $("<p>");
       petEl.attr("data-id", data.animals[i].id);
@@ -190,8 +192,10 @@ $(document).ready(function() {
       if (data.animals[i].photos.length !== 0) {     
         var petPhotoEl = $("<img>");  
         petPhotoEl.attr("src", data.animals[i].photos[0].medium);
+        petPhotoEl.addClass("image is-128x128")
       } else {
         var petPhotoEl = $("<h2>No Photo Available</h2>");
+        petPhotoEl.addClass("image is-128x128")
       }
       petSpeciesEl.text("Species: " + data.animals[i].species);
       petBreedsEl.text("Breed: " + data.animals[i].breeds.primary);
@@ -207,6 +211,7 @@ $(document).ready(function() {
       petResultsEl.append(petEl);
     }
   }
+  
 
   // Fetch search results from PetFinder API and log to console for viewing full data
   var getPetResults = function() {
