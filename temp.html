@@ -90,12 +90,20 @@
 
     <h2 class="has-text-grey-lighter">Enter Zip Code or City, State</h2>
     <p style="color: red;" id="locationError"></p>
-    <input type="text" placeholder="Enter Location Here" id="locationInput">
+    <input type="text" placeholder="e.g., Minneapolis, MN" id="locationInput">
 
     <h2 class="has-text-grey-lighter">Within ____ miles of location</h2>
     <p style="color: red;" id="distanceError"></p>
     <label class="has-text-grey-lighter" for="distanceInput">Distance (max: 500): </label>
     <input type="number" id="distanceInput" value="25">
+
+    <h2 class="has-text-grey-lighter">Sort Results By:</h2>
+    <select id="sortSelection">
+      <option class="has-text-grey-lighter" value="recent">Most Recent Date Published</option>
+      <option class="has-text-grey-lighter" value="-recent">Oldest Date Published</option>
+      <option class="has-text-grey-lighter" value="distance">Closest Proximity</option>
+      <option class="has-text-grey-lighter" value="-distance">Farthest Proximity</option>
+    </select>
 
     <br>
     <br>
