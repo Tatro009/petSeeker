@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .ui-autocomplete {
+      max-height: 100px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -27,6 +35,16 @@
       <option value="Bird">Bird</option>
       <option value="Scales, Fins & Other">Scales, Fins & Other</option>
     </select>
+
+    <div style="display: none;" id="breedSelection">
+     <h2>Choose Breed</h2>
+     <p>You may select as many breeds as you want. If none are selected, all will display</p>
+     <p style="color: red;" id="breedError"></p>
+     <input type="text" id="breedInput">
+     <button id="breedsAddBtn" type="button">Add</button>
+     <ul id="breedsSelected" style="list-style: none;"></ul>
+    </div>
+
 
     <h2>Choose Size</h2>
     <input class="sizeCheckbox" type="checkbox" id="sizeSmall" value="small">
@@ -73,9 +91,8 @@
 
   <div id="petsResults"   style="display: flex; flex-wrap: wrap;"></div>
 
-  
-
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script src="./script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./assets/script.js"></script>
 </body>
 </html>
