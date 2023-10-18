@@ -7,11 +7,15 @@
   <title>Document</title>
 </head>
 <body>
+  <header>
+    <h1 class=" has-text-link is-size-1 has-text-weight-bold has-text-centered" >Pet Seeker</h1>
+    <img src="assets/images/petSeekerBanner.jpg">
+  </header>
 
-  <h1>Search</h1>
+  <h1 class="has-text-link is-size-3 has-text-weight-bold">Search</h1>
 
   <form onsubmit="return false">
-    <h2>Choose Type</h2>
+    <h2 >Choose Type</h2>
     <label for="animalType">Animal Type: </label>
     <select id="animalType">
       <option value="All">All</option>
@@ -64,10 +68,10 @@
     <br>
     <br>
     <br>
-    <button id="searchBtn" type="button">Search</button>
+    <button id="searchBtn" class="button is-link" type="button">Search</button>
   </form>
 
-  <div id="petsResults" style="display: flex; flex-wrap: wrap;"></div>
+  <div id="petsResults"   style="display: flex; flex-wrap: wrap;"></div>
 
   
 
