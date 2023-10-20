@@ -297,6 +297,40 @@ $(document).ready(function() {
       })
   }
 
+// Function to display extended details of a pet
+var displayExtendedDetails = function(data) {
+  var petDetailsEl = $("#petDetails");
+
+  //Clear any previous details
+  petDetailsEl.html("");
+
+  // Create Elements to display the details
+  var petNameEl = $("<h2>");
+  petNameEl.text(data.name);
+
+  var petDescriptionEl = $("<p>");
+  petDescriptionEl.text(data.description);
+
+  var petAgeEl = $("<p>");
+  petAgeEl.text("Age: " + data.age);
+
+  var petSizeEl = $("<p>");
+  petSizeEl.text("Size: " + data.size);
+
+  var petStatusEl = $("<p>");
+  petStatusEl.text("Status: " + data.status);
+
+  // Add these elements to details container
+  petDetailsEl.append(petNameEl);
+  petDetailsEl.append(petDescriptionEl);
+  petDetailsEl.append(petAgeEl);
+  petDetailsEl.append(petSizeEl);
+  petDetailsEl.append(petStatusEl);
+
+  //Display details container
+  petDetailsEl.show();
+};
+
   // Fetch details about selected animal once clicked on
   var getExtendedDetails = function(petID) {
     var URL = petRequestURL + "/" + petID;
@@ -310,6 +344,8 @@ $(document).ready(function() {
       })
       .then(function(data) {
         console.log(data);
+        // Display the extended details
+        displayExtendedDetails(data.animal);
       })
   }
 
