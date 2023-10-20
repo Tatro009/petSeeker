@@ -309,3 +309,18 @@ h3{
 .red-btn:hover{
     color: #fff;
 }
+
+
+
+/*-------------Contact US----------*/
+.lomap{
+    width: 80%;
+    margin: auto;
+    padding: 80px 0;
+
+}
+
+.lomap iframe{
+    width: 100%;
+}
+
