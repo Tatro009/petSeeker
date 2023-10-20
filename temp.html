@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    .ui-autocomplete {
+      max-height: 100px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class=" has-text-link is-size-1 has-text-weight-bold has-text-centered" >Pet Seeker</h1>
+    <img src="assets/images/petSeekerBanner.jpg">
+  </header>
+
+  <h1 class="has-text-link is-size-3 has-text-weight-bold">Search</h1>
+
+  <form class="has-background-link" onsubmit="return false">
+    <h2 class="has-text-grey-lighter" >Choose Type</h2>
+    <label class="has-text-grey-lighter" for="animalType">Animal Type: </label>
+    <select class="has-text-grey-lighter" id="animalType">
+      <option value="All">All</option>
+      <option value="Dog">Dog</option>
+      <option value="Cat">Cat</option>
+      <option value="Rabbit">Rabbit</option>
+      <option value="Small & Furry">Small & Furry</option>
+      <option value="Horse">Horse</option>
+      <option value="Bird">Bird</option>
+      <option value="Scales, Fins & Other">Scales, Fins & Other</option>
+    </select>
+
+    <div style="display: none;" id="breedSelection">
+     <h2 class="has-text-grey-lighter">Choose Breed</h2>
+     <p class="has-text-grey-lighter">You may select as many breeds as you want. If none are selected, all will display</p>
+     <p style="color: red;" id="breedError"></p>
+     <input type="text" id="breedInput">
+     <button id="breedsAddBtn" type="button">Add</button>
+     <ul id="breedsSelected" style="list-style: none;"></ul>
+    </div>
+
+
+    <h2 class="has-text-grey-lighter">Choose Size</h2>
+    <input class="sizeCheckbox" type="checkbox" id="sizeSmall" value="small">
+    <label class="has-text-grey-lighter" for="sizeSmall">Small</label><br>
+    <input class="sizeCheckbox" type="checkbox" id="sizeMedium" value="medium">
+    <label  class="has-text-grey-lighter" for="sizeMedium">Medium</label><br>
+    <input class="sizeCheckbox" type="checkbox" id="sizeLarge" value="large">
+    <label class="has-text-grey-lighter" for="sizeLarge">Large</label><br>
+    <input class="sizeCheckbox" type="checkbox" id="sizeXLarge" value="xlarge">
+    <label class="has-text-grey-lighter" for="sizeXLarge">Extra Large</label><br>
+  
+    <h2 class="has-text-grey-lighter">Choose Gender</h2>
+    <label class="has-text-grey-lighter" for="genderSelection">Gender: </label>
+    <select id="genderSelection">
+      <option class="has-text-grey-lighter" value="any">Any</option>
+      <option class="has-text-grey-lighter" value="male">Male</option>
+      <option class="has-text-grey-lighter" value="female">Female</option>
+    </select>
+
+    <h2>Pets that are...</h2>
+    <input class="otherCharCheckbox" id="childrenCheckbox" type="checkbox" data-param="good_with_children" value="true">
+    <label for="childrenCheckbox">Good with children</label><br>
+    <input class="otherCharCheckbox" id="dogsCheckbox" type="checkbox" data-param="good_with_dogs" value="true">
+    <label for="dogsCheckbox">Good with dogs</label><br>
+    <input class="otherCharCheckbox" id="catsCheckbox" type="checkbox" data-param="good_with_cats" value="true">
+    <label for="catsCheckbox">Good with cats</label><br>
+    <input class="otherCharCheckbox" id="houseCheckbox" type="checkbox" data-param="house_trained" value="true">
+    <label for="houseCheckbox">House-trained</label><br>
+    <input class="otherCharCheckbox" id="declawedCheckbox" type="checkbox" data-param="declawed" value="true">
+    <label for="declawedCheckbox">Declawed</label><br>
+    <input class="otherCharCheckbox" id="specialCheckbox" type="checkbox" data-param="special_needs" value="true">
+    <label for="specialCheckbox">In need of special care</label><br>
+  
+    <h2 class="has-text-grey-lighter">Choose Age</h2>
+    <input class="ageCheckbox" type="checkbox" id="ageBaby" value="baby">
+    <label class="has-text-grey-lighter" for="ageBaby">Baby</label><br>
+    <input class="ageCheckbox" type="checkbox" id="ageYoung" value="young">
+    <label class="has-text-grey-lighter" for="ageYoung">Young</label><br>
+    <input class="ageCheckbox" type="checkbox" id="ageAdult" value="adult">
+    <label class="has-text-grey-lighter" for="ageAdult">Adult</label><br>
+    <input class="ageCheckbox" type="checkbox" id="ageSenior" value="senior">
+    <label class="has-text-grey-lighter" for="ageSenior">Senior</label><br>
+
+    <h2 class="has-text-grey-lighter">Enter Zip Code or City, State</h2>
+    <p style="color: red;" id="locationError"></p>
+    <input type="text" placeholder="e.g., Minneapolis, MN" id="locationInput">
+
+    <h2 class="has-text-grey-lighter">Within ____ miles of location</h2>
+    <p style="color: red;" id="distanceError"></p>
+    <label class="has-text-grey-lighter" for="distanceInput">Distance (max: 500): </label>
+    <input type="number" id="distanceInput" value="25">
+
+    <h2 class="has-text-grey-lighter">Sort Results By:</h2>
+    <select id="sortSelection">
+      <option class="has-text-grey-lighter" value="recent">Most Recent Date Published</option>
+      <option class="has-text-grey-lighter" value="-recent">Oldest Date Published</option>
+      <option class="has-text-grey-lighter" value="distance">Closest Proximity</option>
+      <option class="has-text-grey-lighter" value="-distance">Farthest Proximity</option>
+    </select>
+
+    <br>
+    <br>
+    <br>
+    <button id="searchBtn" class="button is-link is-light" type="button">Search</button>
+  </form>
+
+  <div id="petsResults"  style="display: flex; flex-wrap: wrap;"></div>
+  <div id="pageBtns" style="display: none;">
+    <button id="previousBtn" type="button">Prev</button>
+    <p style="display: inline;" id="pageNumber"></p>
+    <button id="nextBtn" type="button">Next</button>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="./assets/script.js"></script>
+</body>
+</html>
