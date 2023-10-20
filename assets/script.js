@@ -34,6 +34,11 @@ $(document).ready(function() {
       fetchToken.then(function(expireTime) {
         setTimeout(getToken, expireTime * 1000);
       })
+
+      // Load most recent viewed pet
+      fetchToken.then(function(){
+        loadRecentlyViewed();
+      })
   }
   
   // Call function to fetch the token
@@ -50,6 +55,39 @@ $(document).ready(function() {
     }
     return petRequestOptions;
   }
+ 
+ // Function to take recently viewed pet IDs from local storage and load them into the recently viewed section
+ var loadRecentlyViewed = function() {
+  var recentPetEl = $("#recentPet");
+  recentPetEl.html("");
+
+  // Check if recent pet info is stored in local storage, and if so, display and populate container
+  if (localStorage.getItem("recentPetID")) {
+    var recentID = localStorage.getItem("recentPetID");
+    var URL = petRequestURL + "/" + recentID;
+
+    recentPetEl.attr("style", "display: block;");
+    $("#recentPetHeader").attr("style", "display: block;");
+
+    fetch(URL, setPetRequestOptions())
+      .then(function(response) {
+        if (!response.ok) {
+          recentPetEl.html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but there seems to be an issue retrieving that information. We apoligze for any inconvenience.</pre>")
+        } else {
+          return response.json();
+        }
+      })
+      .then(function(data) {
+        console.log(data);
+        var recentPetPhoto = $("<img>");
+        recentPetEl.attr("data-recent-id", data.animal.id);
+        recentPetPhoto.attr("src", data.animal.primary_photo_cropped.small);
+        recentPetEl.append(recentPetPhoto);
+      })
+  } else {
+    return
+  }
+}
 
   // Function for search button event listener
   var searchBtnBehavior = function(event) {
@@ -116,7 +154,7 @@ $(document).ready(function() {
           setAvailableBreeds(data);
         })
     } else {
-      $("#breedSelection").attr("style", "display: none;")
+      $("#breedSelection").attr("style", "display: none;");
     }
   }
 
@@ -243,7 +281,7 @@ $(document).ready(function() {
       $("#nextBtn").attr("style", "display: inline;");
     }
 
-    // Add animal date to page using for loop
+    // Add animal data to page using for loop
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
       petEl.addClass("has-text-link");
@@ -348,6 +386,11 @@ var displayExtendedDetails = function(data) {
         displayExtendedDetails(data.animal);
       })
   }
+  
+  // Add selected animal to recently viewed section
+  var addRecentlyViewed = function(petID) {
+    localStorage.setItem("recentPetID", petID);
+  };
 
   // Set event listener for search button
   $("#searchBtn").on("click", searchBtnBehavior);
@@ -396,6 +439,15 @@ var displayExtendedDetails = function(data) {
     event.preventDefault();
     // Grab stored ID from pet element and use it for retrieval of details
     var petID = Number($(this).attr("data-id"));
+    addRecentlyViewed(petID);
+    loadRecentlyViewed();
+    getExtendedDetails(petID);
+  })
+
+  // Set event listener for recently viewed pet
+  $("#recentPet").on("click", function(event) {
+    event.preventDefault();
+    var petID = Number($("#recentPet").attr("data-recent-id"));
     getExtendedDetails(petID);
   })
 
