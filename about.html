@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>petSeeker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,600;1,300;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <section class="sub-header">
+        <nav>
+            <a href="home.html"><img src="images/cropped-PA-logo.jpg"></a>
+        
+        <div class="nav-links" id="navLinks">
+            <i class="fa fa-times" onclick="hideMenu()"></i>
+            
+            <ul>
+
+                <li><a href="home.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+                <li><a href="">ADOPT</a></li>
+
+            </ul>
+
+
+        </div>
+        <i class="fa fa-bars" onclick="showMenu()"></i>
+
+    </nav>
+    <h1>About Us</h1>
+
+
+    </section>
+
+<!------------ About Us Content----------->
+<section class="about-con">
+
+    <div class="row">
+        <div class="aboutcon-col">
+            <h1>We are the best finder for your companion</h1>
+            <p>random random random random random random random random random random random random random 
+                random random random random random random random random random random 
+                random random random random random random random random random random random 
+                random random random random random random random random</p>
+                <a href="" class="hero-btn red-btn">EXPLORE NOW</a>
+        </div>
+        <div class="aboutcon-col">
+            <img src="../petSeeker/images/weine.jpg">
+        </div>
+    </div>
+
+</section>
+
+
+<!--------- Footer----------->
+<section class="footer">
+    <h3>About Us</h3>
+    <p>random random random random random random random random random <br>random random 
+        random random random random random random random random random</p>
+       <br>
+        <p>Made By Best In Show</p>
+</section>
+
+
+<!------------JavaScrip for Toggle Menu--------------->
+    <script>
+
+        var navLinks = document.getElementById("navLinks");
+
+        function showMenu(){
+            navLinks.style.right = "0";
+
+        }
+
+        function hideMenu(){
+            navLinks.style.right = "-200px";
+        }
+
+
+
+    </script>
+
+
+
+
+
+    
+</body>
+</html>
