@@ -285,10 +285,10 @@ $(document).ready(function() {
     // Add animal data to page using for loop
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
-      petEl.addClass("has-text-link");
+      petEl.addClass("has-text-grey");
       petEl.addClass("pet");
       var petColorEl = $("<p>");
-      petColorEl.addClass("has-text-link");
+      petColorEl.addClass("has-text-grey");
       var petSpeciesEl = $("<p>");
       var petBreedsEl = $("<p>");
       petEl.attr("data-id", data.animals[i].id);

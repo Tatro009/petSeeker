@@ -202,7 +202,7 @@ h3{
 
 
 .start{
-  width: 80%;
+  width: 100%;
   background-image: linear-gradient(rgba(5, 4, 1, 0.589),rgba(108, 90, 9, 0.299)),url(../images/catblanket.jpg);
   background-position: center;
   background-size: cover;
@@ -341,12 +341,12 @@ height: 55vh;
 
 /*Adoption Page*/
 
-.header-temp {
-    min-height: 75vh;
+.header-temp{
+    height: 65vh;
     width: 100%;
-    background-image: linear-gradient(rgba(5, 4, 1, 0.589),rgba(108, 90, 9, 0.299)),url(../images/catanddog.jpg);
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../images/catanddog.jpg);
     background-position: center;
     background-size: cover;
-    position: relative;
-
+    text-align: center;
+    color: #fff;
 }
