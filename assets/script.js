@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  var mapsEmbedKey = "AIzaSyDkB2SGpufmMHUsXCur6aDwpC-IUtp9R8g"
   var petAPIKey = "5EXQ5Foghv38BcGMwsiiCHFbN2RMahxFoob9XTdwq64B5VA9v9";
   var petSecret = "gLuFEh8iTpSLJXTjLj2xbFMBVLzh4gBV6RPDlTUM";
   var petTokenURL = "https://api.petfinder.com/v2/oauth2/token";
@@ -358,12 +359,43 @@ var displayExtendedDetails = function(data) {
   var petStatusEl = $("<p>");
   petStatusEl.text("Status: " + data.status);
 
+  var petLocationEl = $("<p>");
+  if (data.contact.address.address1 != null) {
+    petLocationEl.html(data.contact.address.address1 + "<br>" + data.contact.address.city + ", " + data.contact.address.state + " " + data.contact.address.postcode);
+  } else {
+    petLocationEl.html(data.contact.address.city + ", " + data.contact.address.state + " " + data.contact.address.postcode);
+  };
+
+  var petEmailEl = $("<p>");
+  petEmailEl.text("Email: " + data.contact.email);
+
+  var petPhoneEl = $("<p>");
+  petPhoneEl.text("Phone: " + data.contact.phone);
+
+  var petURL = $("<p>");
+  petURL.html("PetFinder URL: <a href=" + data.url + " target=_blank>" + data.url + "</a>");
+
+  // Add element and parameters to Google Maps Embed API to display map of adoption location
+  var petMapEl = $('<iframe width="450" height="250" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>');
+  if (data.contact.address.address1 != null && !data.contact.address.address1.includes("PO") && !data.contact.address.address1.includes("P.O.")) {
+    var address = data.contact.address.address1 + "," + data.contact.address.city + "," + data.contact.address.state + "," + data.contact.address.postcode;
+  } else {
+    var address = data.contact.address.city + "," + data.contact.address.state + "," + data.contact.address.postcode;
+  }
+  var mapsAddress = address.replaceAll(" ", "+");
+  petMapEl.attr("src", "https://www.google.com/maps/embed/v1/place?key=" + mapsEmbedKey + "&q=" + mapsAddress);
+
   // Add these elements to details container
   petDetailsEl.append(petNameEl);
   petDetailsEl.append(petDescriptionEl);
   petDetailsEl.append(petAgeEl);
   petDetailsEl.append(petSizeEl);
   petDetailsEl.append(petStatusEl);
+  petDetailsEl.append(petLocationEl);
+  petDetailsEl.append(petEmailEl);
+  petDetailsEl.append(petPhoneEl);
+  petDetailsEl.append(petURL);
+  petDetailsEl.append(petMapEl);
 
   //Display details container
   petDetailsEl.show();
@@ -445,7 +477,7 @@ var displayExtendedDetails = function(data) {
   })
 
   // Set event listener for recently viewed pet
-  $("#recentPet").on("click", function(event) {
+  $("#recentPet").on("click", "img", function(event) {
     event.preventDefault();
     var petID = Number($("#recentPet").attr("data-recent-id"));
     getExtendedDetails(petID);
