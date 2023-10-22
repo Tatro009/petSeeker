@@ -231,7 +231,6 @@ h3{
 .footer{
     width: 100%;
     text-align: center;
-    padding: 30px 0;
 }
 
 .footer h4{
@@ -279,11 +278,6 @@ h3{
     flex: 48%;
     padding: 30px 2px;
 
-}
-
-.aboutcon-col img{
-    width: 100%;
-    padding-left: 50px;
 }
 
 
@@ -342,6 +336,7 @@ height: 55vh;
 /*Adoption Page*/
 
 .header-temp{
+    
     height: 65vh;
     width: 100%;
     background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(../images/catanddog.jpg);
@@ -350,3 +345,4 @@ height: 55vh;
     text-align: center;
     color: #fff;
 }
+   
