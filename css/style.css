@@ -151,10 +151,6 @@ nav .fa{
     padding-top: 100px;
 }
 
-h1{
-    font-size: 36px;
-    font-weight: 600;
-}
 
 
 p{
@@ -290,10 +286,6 @@ h3{
     padding-left: 50px;
 }
 
-.aboutcon-col h1{
-    padding-top: 0;
-
-}
 
 .aboutcon-col p{
     padding: 40px 7px;
@@ -347,3 +339,14 @@ height: 55vh;
 }
 
 
+/*Adoption Page*/
+
+.header-temp {
+    min-height: 75vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(5, 4, 1, 0.589),rgba(108, 90, 9, 0.299)),url(../images/catanddog.jpg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+
+}

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adoption Page</title>
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <title>Document</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     .ui-autocomplete {
@@ -16,11 +17,31 @@
 </head>
 <body>
   <header>
-    <h1 class=" has-text-link is-size-1 has-text-weight-bold has-text-centered" >Pet Seeker</h1>
-    <img src="assets/images/petSeekerBanner.jpg">
-  </header>
+    <nav>
+      <a href="home.html"><img src="images/cropped-PA-logo.jpg"></a>
+  
+  <div class="nav-links" id="navLinks">
+      
+      <ul>
 
-  <h1 class="has-text-link is-size-3 has-text-weight-bold">Search</h1>
+          <li><a href="home.html">HOME</a></li>
+          <li><a href="about.html">ABOUT</a></li>
+          <li><a href="contact.html">CONTACT</a></li>
+          <li><a href="temp.html">ADOPT</a></li>
+
+      </ul>
+
+
+  </div>
+
+</nav>
+<h1 class="has-text-white is-size-1 has-text-weight-bold has-text-centered py-6  header-temp" >Find Your New Furry Friend!</h1>
+  </header>
+  
+
+  <h2 class="has-text-link is-size-3 has-text-weight-bold">Search</h2>
+
+
 
   <form class="has-background-link" onsubmit="return false">
     <h2 class="has-text-grey-lighter" >Choose Type</h2>
