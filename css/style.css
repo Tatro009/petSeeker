@@ -117,7 +117,7 @@ nav .fa{
     }
 
     .nav-links{
-        position: absolute;
+        position: fixed;
         background: #ec1505;
         height: 100vh;
         width: 200px;
@@ -313,6 +313,19 @@ h3{
 
 
 /*-------------Contact US----------*/
+
+
+.dub-header{
+height: 55vh;
+    width: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.718),rgba(33, 31, 5, 0.296)),url(../images/kang.jpg);
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    color: #fff;
+}
+
+
 .lomap{
     width: 80%;
     margin: auto;
@@ -323,4 +336,14 @@ h3{
 .lomap iframe{
     width: 100%;
 }
+
+.contact-col input, .contact-col textarea{
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 17px;
+    outline: none;
+    border: 1px solid #ccc;
+
+}
+
 
