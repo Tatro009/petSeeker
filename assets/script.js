@@ -403,7 +403,11 @@ var displayExtendedDetails = function(data) {
   };
 
   var petEmailEl = $("<p>");
-  petEmailEl.text("Email: " + data.contact.email);
+  if (data.contact.email != null) {
+    petEmailEl.text("Email: " + data.contact.email);
+  } else {
+    petEmailEl.text("Email: Not Available");
+  }
 
   var petPhoneEl = $("<p>");
   petPhoneEl.text("Phone: " + data.contact.phone);
@@ -412,7 +416,7 @@ var displayExtendedDetails = function(data) {
   petURL.html("PetFinder URL: <a href=" + data.url + " target=_blank>" + data.url + "</a>");
 
   // Add element and parameters to Google Maps Embed API to display map of adoption location
-  var petMapEl = $('<iframe width="450" height="250" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>');
+  var petMapEl = $('<iframe width="700" height="500" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>');
   if (data.contact.address.address1 != null && !data.contact.address.address1.includes("PO") && !data.contact.address.address1.includes("P.O.")) {
     var address = data.contact.address.address1 + "," + data.contact.address.city + "," + data.contact.address.state + "," + data.contact.address.postcode;
   } else {
