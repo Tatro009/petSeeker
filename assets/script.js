@@ -19,7 +19,7 @@ $(document).ready(function() {
     var fetchToken = fetch(petTokenURL, petTokenOptions)
       .then(function(response) {
         if (!response.ok) {
-          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but our service is unavailable at this time. We apoligze for any inconvenience.</pre>")
+          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but our service is unavailable at this time. We apologize for any inconvenience.</pre>")
         } else {
         return response.json();
         }
@@ -57,38 +57,66 @@ $(document).ready(function() {
     return petRequestOptions;
   }
  
- // Function to take recently viewed pet IDs from local storage and load them into the recently viewed section
- var loadRecentlyViewed = function() {
-  var recentPetEl = $("#recentPet");
-  recentPetEl.html("");
+  // Function to take recently viewed pet IDs from local storage and load them into the recently viewed section
+  var loadRecentlyViewed = function() {
+    var recentPetEl = $("#recentPet");
+    recentPetEl.html("");
 
-  // Check if recent pet info is stored in local storage, and if so, display and populate container
-  if (localStorage.getItem("recentPetID")) {
-    var recentID = localStorage.getItem("recentPetID");
-    var URL = petRequestURL + "/" + recentID;
+    // Check if recent pet info is stored in local storage, and if so, display and populate container
+    if (localStorage.getItem("recentPetIDs")) {
+      var recentPets = JSON.parse(localStorage.getItem("recentPetIDs"));
+      recentPetEl.attr("style", "display: block;");
+      $("#recentPetHeader").attr("style", "display: block;");
+      
+      for (var i = 0; i < recentPets.length; i++) {
+        var URL = petRequestURL + "/" + recentPets[i];
 
-    recentPetEl.attr("style", "display: block;");
-    $("#recentPetHeader").attr("style", "display: block;");
-
-    fetch(URL, setPetRequestOptions())
-      .then(function(response) {
-        if (!response.ok) {
-          recentPetEl.html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but there seems to be an issue retrieving that information. We apoligze for any inconvenience.</pre>")
-        } else {
-          return response.json();
-        }
-      })
-      .then(function(data) {
-        console.log(data);
-        var recentPetPhoto = $("<img>");
-        recentPetEl.attr("data-recent-id", data.animal.id);
-        recentPetPhoto.attr("src", data.animal.primary_photo_cropped.small);
-        recentPetEl.append(recentPetPhoto);
-      })
-  } else {
-    return
+        fetch(URL, setPetRequestOptions())
+          .then(function(response) {
+            if (!response.ok) {
+              recentPetEl.html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>We're sorry, but there seems to be an issue retrieving that information. We apologize for any inconvenience.</pre>")
+            } else {
+              return response.json();
+            }
+          })
+          .then(function(data) {
+            console.log(data);
+            var listEl = $('<li style="display: inline;">');
+            var recentPetPhoto = $("<img>");
+            listEl.attr("data-recent-id", data.animal.id);
+            if (data.animal.primary_photo_cropped) {
+              recentPetPhoto.attr("src", data.animal.primary_photo_cropped.small);
+            } else {
+              setPlaceholderImage(data.animal.type, recentPetPhoto);
+            };
+            recentPetPhoto.attr("width", "300");
+            recentPetEl.append(listEl);
+            listEl.append(recentPetPhoto);
+          })
+      }
+    } else {
+      return
+    }
   }
-}
+
+  // Function to set placeholder image if photo is nonexistent
+  var setPlaceholderImage = function(type, destination) {
+    if (type == "Dog") {
+      destination.attr("src", "images/cartoon_dog.png");
+    } else if (type == "Cat") {
+      destination.attr("src", "images/cartoon_cat.png");
+    } else if (type == "Rabbit") {
+      destination.attr("src", "images/cartoon_rabbit.png");
+    } else if (type == "Small & Furry") {
+      destination.attr("src", "images/cartoon_hamster.jpeg");
+    } else if (type == "Horse") {
+      destination.attr("src", "images/cartoon_horse.jpeg");
+    } else if (type == "Bird") {
+      destination.attr("src", "images/cartoon_bird.png");
+    } else {
+      destination.attr("src", "images/cartoon_lizard.jpeg");
+    }
+  }
 
   // Function for search button event listener
   var searchBtnBehavior = function(event) {
@@ -99,7 +127,7 @@ $(document).ready(function() {
       $("#locationError").text("Please enter a location.");
       return
     };
-    if ($("#distanceInput").val() === "") {
+    if ($("#distanceInput").val() === "Small & Furry") {
       $("#distanceError").text("Please enter a distance for the search results.");
       return
     };
@@ -285,6 +313,7 @@ $(document).ready(function() {
     // Add animal data to page using for loop
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
+      var petPhotoEl = $("<img>");
       petEl.addClass("has-text-grey");
       petEl.addClass("pet");
       var petColorEl = $("<p>");
@@ -293,12 +322,11 @@ $(document).ready(function() {
       var petBreedsEl = $("<p>");
       petEl.attr("data-id", data.animals[i].id);
       
-      if (data.animals[i].photos.length !== 0) {     
-        var petPhotoEl = $("<img>");  
-        petPhotoEl.attr("src", data.animals[i].photos[0].medium);
+      if (data.animals[i].primary_photo_cropped) {
+        petPhotoEl.attr("src", data.animals[i].primary_photo_cropped.small);
         petPhotoEl.addClass("image is-128x128");
       } else {
-        var petPhotoEl = $("<h2>No Photo Available</h2>");
+        setPlaceholderImage(data.animals[i].type, petPhotoEl);
         petPhotoEl.addClass("image is-128x128");
       }
       petSpeciesEl.text("Species: " + data.animals[i].species);
@@ -325,7 +353,7 @@ $(document).ready(function() {
     fetch(setRequestURL(page, existingParams), setPetRequestOptions())
       .then(function(response) {
         if (!response.ok) {
-          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>There seems to be a problem with the search request. Please check the spelling and format of the location entered. We apoligze for any inconvenience.</pre>")
+          $("#petsResults").html("<pre>ERROR: " + response.status + " " + response.statusText + "<br>There seems to be a problem with the search request. Please check the spelling and format of the location entered. We apologize for any inconvenience.</pre>")
         } else {
         return response.json();
         }
@@ -344,6 +372,14 @@ var displayExtendedDetails = function(data) {
   petDetailsEl.html("");
 
   // Create Elements to display the details
+  var petPhotoEl = $("<img>");
+  if (data.primary_photo_cropped) {
+    petPhotoEl.attr("src", data.primary_photo_cropped.large);
+  } else {
+    setPlaceholderImage(data.type, petPhotoEl);
+    petPhotoEl.attr("width", "600");
+  };
+
   var petNameEl = $("<h2>");
   petNameEl.text(data.name);
 
@@ -367,7 +403,11 @@ var displayExtendedDetails = function(data) {
   };
 
   var petEmailEl = $("<p>");
-  petEmailEl.text("Email: " + data.contact.email);
+  if (data.contact.email != null) {
+    petEmailEl.text("Email: " + data.contact.email);
+  } else {
+    petEmailEl.text("Email: Not Available");
+  }
 
   var petPhoneEl = $("<p>");
   petPhoneEl.text("Phone: " + data.contact.phone);
@@ -376,7 +416,7 @@ var displayExtendedDetails = function(data) {
   petURL.html("PetFinder URL: <a href=" + data.url + " target=_blank>" + data.url + "</a>");
 
   // Add element and parameters to Google Maps Embed API to display map of adoption location
-  var petMapEl = $('<iframe width="450" height="250" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>');
+  var petMapEl = $('<iframe width="700" height="500" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>');
   if (data.contact.address.address1 != null && !data.contact.address.address1.includes("PO") && !data.contact.address.address1.includes("P.O.")) {
     var address = data.contact.address.address1 + "," + data.contact.address.city + "," + data.contact.address.state + "," + data.contact.address.postcode;
   } else {
@@ -386,6 +426,7 @@ var displayExtendedDetails = function(data) {
   petMapEl.attr("src", "https://www.google.com/maps/embed/v1/place?key=" + mapsEmbedKey + "&q=" + mapsAddress);
 
   // Add these elements to details container
+  petDetailsEl.append(petPhotoEl);
   petDetailsEl.append(petNameEl);
   petDetailsEl.append(petDescriptionEl);
   petDetailsEl.append(petAgeEl);
@@ -399,6 +440,7 @@ var displayExtendedDetails = function(data) {
 
   //Display details container
   petDetailsEl.show();
+  $("#petDetailsHeader").show();
 };
 
   // Fetch details about selected animal once clicked on
@@ -421,7 +463,18 @@ var displayExtendedDetails = function(data) {
   
   // Add selected animal to recently viewed section
   var addRecentlyViewed = function(petID) {
-    localStorage.setItem("recentPetID", petID);
+    if (localStorage.getItem("recentPetIDs")) {
+      var recentPets = JSON.parse(localStorage.getItem("recentPetIDs"));
+      if (!recentPets.includes(petID)){
+        recentPets.unshift(petID);
+      }
+      if (recentPets.length > 5) {
+        recentPets.pop();
+      }
+    } else {
+      var recentPets = [petID];
+    }
+    localStorage.setItem("recentPetIDs", JSON.stringify(recentPets));
   };
 
   // Set event listener for search button
@@ -477,9 +530,9 @@ var displayExtendedDetails = function(data) {
   })
 
   // Set event listener for recently viewed pet
-  $("#recentPet").on("click", "img", function(event) {
+  $("#recentPet").on("click", "li", function(event) {
     event.preventDefault();
-    var petID = Number($("#recentPet").attr("data-recent-id"));
+    var petID = Number($(this).attr("data-recent-id"));
     getExtendedDetails(petID);
   })
 
