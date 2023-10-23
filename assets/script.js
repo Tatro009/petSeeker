@@ -127,7 +127,7 @@ $(document).ready(function() {
       $("#locationError").text("Please enter a location.");
       return
     };
-    if ($("#distanceInput").val() === "Small & Furry") {
+    if ($("#distanceInput").val() === "") {
       $("#distanceError").text("Please enter a distance for the search results.");
       return
     };
