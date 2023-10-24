@@ -80,7 +80,6 @@ $(document).ready(function() {
             }
           })
           .then(function(data) {
-            console.log(data);
             var listEl = $('<li style="display: inline;">');
             var recentPetPhoto = $("<img>");
             listEl.attr("data-recent-id", data.animal.id);
@@ -289,6 +288,11 @@ $(document).ready(function() {
     var petResultsHeaderEl = $("#petsResultsHeader");
     var petNumberCountEl = $("#numberCount");
 
+    if (data.animals.length == 0) {
+      petResultsEl.text("No Pets Found! Try a different search.");
+      petResultsEl.addClass("is-size-4");
+    }
+
     petNumberCountEl.text(data.pagination.total_count + " animals on " + data.pagination.total_pages + " pages");
 
     // Store pagination data to use for results and display page buttons
@@ -371,10 +375,15 @@ $(document).ready(function() {
       petResultsEl.append(petEl);
       petResultsHeaderEl.show();
       petNumberCountEl.show();
+      
+      setTimeout(function() {
+        document.querySelector("#petsResultsHeader").scrollIntoView();
+      }, 200);
+
     }
   }
 
-  // Fetch search results from PetFinder API and log to console for viewing full data
+  // Fetch search results from PetFinder API
   // Using 'page' and 'existingParams' to facilitate use of page buttons
   var getPetResults = function(page, existingParams) {
     $("#locationError").text("");
@@ -389,7 +398,6 @@ $(document).ready(function() {
         }
       })
       .then(function(data) {
-        console.log(data);
         printSearchResults(data);
       })
   }
@@ -489,7 +497,6 @@ var displayExtendedDetails = function(data) {
         }
       })
       .then(function(data) {
-        console.log(data);
         // Display the extended details
         displayExtendedDetails(data.animal);
         setTimeout(function() {
