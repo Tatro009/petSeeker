@@ -1,5 +1,7 @@
 # The Pet Seeker
 
+![PetSeeker Banner](./images/catanddog.jpg)
+
 ## Table of Contents
 * [What is the Pet Seeker](#what-is-the-Pet-Seeker)
 * [Installation](#Installation)
@@ -16,8 +18,7 @@ The Pet Seeker is an interactive pet adoption locator app designed for pet lover
 The Pet Seeker functions on your web browser. No additional bells and whistles required!
 
 ### How to Use the Pet Seeker
-
-
+To use the Pet Seeker, select Adopt from the navigation menu on the home page. Alternatively, if you scroll down the page clicking the "Start" button will bring you to the adoption search form. Select the attributes that describe the furry friend you are seeking, and enter your location information. When you click search, you will find somebody special near you that's looking for a loving furever home! Did you accidentally close the page? Not to worry - simply come back to our search form and your recently browsed pets and their adoption information have been stored locally for you to revisit.
 
 ### Credits
 
