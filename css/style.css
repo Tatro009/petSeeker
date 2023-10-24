@@ -348,7 +348,3 @@ height: 55vh;
     color: #fff;
 }
    
-.pet:hover,
-.recentView:hover {
-    cursor: pointer;
-}
