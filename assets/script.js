@@ -89,7 +89,8 @@ $(document).ready(function() {
             } else {
               setPlaceholderImage(data.animal.type, recentPetPhoto);
             };
-            recentPetPhoto.attr("width", "300");
+            recentPetPhoto.attr("width", "100");
+            listEl.addClass("mr-3").addClass("recentView");
             recentPetEl.append(listEl);
             listEl.append(recentPetPhoto);
           })
@@ -285,12 +286,17 @@ $(document).ready(function() {
   // Function to print search results to page
   var printSearchResults = function(data) {
     var petResultsEl = $("#petsResults");
+    var petResultsHeaderEl = $("#petsResultsHeader");
+    var petNumberCountEl = $("#numberCount");
+
+    petNumberCountEl.text(data.pagination.total_count + " animals on " + data.pagination.total_pages + " pages");
 
     // Store pagination data to use for results and display page buttons
     petResultsEl.attr("data-page", data.pagination.current_page);
     petResultsEl.attr("data-total-pages", data.pagination.total_pages);
-    $("#pageNumber").text(data.pagination.current_page);
-    $("#pageBtns").attr("style", "display: block;");
+    $("#pageNumber").text("Page: " + data.pagination.current_page);
+    // $("#pageBtns").attr("style", "display: block;");
+    $("#pageBtns").removeClass("is-hidden");
 
     // Will hide previous button if already on first page
     if (petResultsEl.attr("data-page") == 1) {
@@ -314,13 +320,15 @@ $(document).ready(function() {
     for (var i = 0; i < data.animals.length; i++) {
       var petEl = $("<div>");
       var petPhotoEl = $("<img>");
-      petEl.addClass("has-text-grey m5");
+      petEl.addClass("has-text-grey").addClass("mr-4");
       petEl.addClass("pet");
       var petColorEl = $("<p>");
       petColorEl.addClass("has-text-grey m5");
       var petSpeciesEl = $("<p>");
       var petBreedsEl = $("<p>");
       petEl.attr("data-id", data.animals[i].id);
+      var petNameEl = $("<p>");
+      var petGenderEl = $("<p>");
       
       if (data.animals[i].primary_photo_cropped) {
         petPhotoEl.attr("src", data.animals[i].primary_photo_cropped.small);
@@ -329,7 +337,20 @@ $(document).ready(function() {
         setPlaceholderImage(data.animals[i].type, petPhotoEl);
         petPhotoEl.addClass("image is-128x128 m5");
       }
+
+      if (data.animals[i].name != null && data.animals[i].name != "") {
+        petNameEl.text("Name: " + data.animals[i].name);
+      } else {
+        petNameEl.text("Name: Not Available");
+      }
+
       petSpeciesEl.text("Species: " + data.animals[i].species);
+
+      if (data.animals[i].gender != null && data.animals[i].gender != "") {
+        petGenderEl.text("Gender: " + data.animals[i].gender);
+      } else {
+        petGenderEl.text("Gender: Not Available");
+      }
       petBreedsEl.text("Breed: " + data.animals[i].breeds.primary);
       if (data.animals[i].colors.primary !== null) {
         petColorEl.text("Color: " + data.animals[i].colors.primary);
@@ -337,10 +358,14 @@ $(document).ready(function() {
         petColorEl.text("Color: N/A");
       };
       petEl.append(petPhotoEl);
+      petEl.append(petNameEl);
       petEl.append(petSpeciesEl);
+      petEl.append(petGenderEl);
       petEl.append(petColorEl);
       petEl.append(petBreedsEl);
       petResultsEl.append(petEl);
+      petResultsHeaderEl.show();
+      petNumberCountEl.show();
     }
   }
 
@@ -458,6 +483,10 @@ var displayExtendedDetails = function(data) {
         console.log(data);
         // Display the extended details
         displayExtendedDetails(data.animal);
+        setTimeout(function() {
+          document.querySelector("#petDetailsHeader").scrollIntoView();
+        }, 200);
+        
       })
   }
   
