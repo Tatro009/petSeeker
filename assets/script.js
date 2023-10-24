@@ -323,7 +323,7 @@ $(document).ready(function() {
       petEl.addClass("has-text-grey").addClass("mr-4");
       petEl.addClass("pet");
       var petColorEl = $("<p>");
-      petColorEl.addClass("has-text-grey");
+      petColorEl.addClass("has-text-grey m5");
       var petSpeciesEl = $("<p>");
       var petBreedsEl = $("<p>");
       petEl.attr("data-id", data.animals[i].id);
@@ -332,10 +332,10 @@ $(document).ready(function() {
       
       if (data.animals[i].primary_photo_cropped) {
         petPhotoEl.attr("src", data.animals[i].primary_photo_cropped.small);
-        petPhotoEl.addClass("image is-128x128");
+        petPhotoEl.addClass("image is-128x128 m5");
       } else {
         setPlaceholderImage(data.animals[i].type, petPhotoEl);
-        petPhotoEl.addClass("image is-128x128");
+        petPhotoEl.addClass("image is-128x128 m5");
       }
 
       if (data.animals[i].name != null && data.animals[i].name != "") {
