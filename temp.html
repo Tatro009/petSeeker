@@ -133,18 +133,25 @@
 
   <br>
 
-  <h2 class="has-text-weight-bold" id="recentPetHeader" style="display: none;">Most Recently Viewed Pets</h2>
+  <h2 class="has-text-weight-bold is-size-3 mt-6" id="recentPetHeader" style="display: none;">Most Recently Viewed Pets</h2>
   <ul id="recentPet" style="display: none; list-style-type: none;"></ul>
+
   <br>
 
-  <div id="petsResults" style="display: flex; flex-wrap: wrap;"></div>
-  <div id="pageBtns" style="display: none;">
-    <button class="button is-light" id="previousBtn" type="button">Prev</button>
-    <p class="has-text-weight-bold has-text-grey" style="display: inline;" id="pageNumber"></p>
-    <button class="button is-light" id="nextBtn" type="button">Next</button>
+  <h2 class="has-text-weight-bold is-size-3 mt-6" id="petsResultsHeader" style="display: none;">Search Results</h2>
+  <p id="numberCount" style="display: none;"></p>
+  <div id="petsResults"  style="display: flex; flex-wrap: wrap;"></div>
+  <div class="is-flex is-justify-content-center">
+    <div class="mt-4 is-flex is-justify-content-center is-align-items-center is-hidden" id="pageBtns" style="display: none;">
+      <button class="button is-light" id="previousBtn" type="button">Prev</button>
+      <p class="has-text-weight-bold has-text-grey is-size-6 mx-2" style="display: inline;" id="pageNumber"></p>
+      <button class="button is-light" id="nextBtn" type="button">Next</button>
+    </div>
   </div>
 
-  <h2 id="petDetailsHeader" class="has-text-weight-bold" style="display: none;">More Details</h2>
+  <br>
+
+  <h2 id="petDetailsHeader" class="has-text-weight-bold is-size-3 mt-6" style="display: none;">More Details</h2>
   <div id="petDetails" style="display: none;"></div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
