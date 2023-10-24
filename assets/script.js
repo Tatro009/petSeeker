@@ -329,6 +329,7 @@ $(document).ready(function() {
       petEl.attr("data-id", data.animals[i].id);
       var petNameEl = $("<p>");
       var petGenderEl = $("<p>");
+      var petDistanceEl = $("<p>");
       
       if (data.animals[i].primary_photo_cropped) {
         petPhotoEl.attr("src", data.animals[i].primary_photo_cropped.small);
@@ -357,12 +358,16 @@ $(document).ready(function() {
       } else {
         petColorEl.text("Color: N/A");
       };
+
+      petDistanceEl.text("Distance: " + data.animals[i].distance + " miles");
+
       petEl.append(petPhotoEl);
       petEl.append(petNameEl);
       petEl.append(petSpeciesEl);
       petEl.append(petGenderEl);
       petEl.append(petColorEl);
       petEl.append(petBreedsEl);
+      petEl.append(petDistanceEl);
       petResultsEl.append(petEl);
       petResultsHeaderEl.show();
       petNumberCountEl.show();
@@ -435,7 +440,11 @@ var displayExtendedDetails = function(data) {
   }
 
   var petPhoneEl = $("<p>");
-  petPhoneEl.text("Phone: " + data.contact.phone);
+  if (data.contact.phone != null) {
+    petPhoneEl.text("Phone: " + data.contact.phone);
+  } else {
+    petPhoneEl.text("Phone: Not Available");
+  }
 
   var petURL = $("<p>");
   petURL.html("PetFinder URL: <a href=" + data.url + " target=_blank>" + data.url + "</a>");
